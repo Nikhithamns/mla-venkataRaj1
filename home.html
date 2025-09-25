@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect on WhatsApp</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      max-width: 1000px;
+      gap: 20px;
+    }
+
+    /* YouTube-style 16:9 Video */
+    .video-section {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .video-section video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* keeps full video visible */
+    }
+
+    .card-section {
+      background: rgba(255, 255, 255, 0.95);
+      flex-direction: column;
+      border-radius: 20px;
+      padding: 20px 30px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .card-section h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .card-section p.designation {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .card-section p.description {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .whatsapp-btn {
+      display: inline-block;
+      padding: 14px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      background-color: #25D366;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .whatsapp-btn:hover {
+      background-color: #1ebc59;
+    }
+
+    @media (max-width: 768px) {
+      .card-section h1 {
+        font-size: 24px;
+      }
+
+      .card-section p.designation,
+      .card-section p.description {
+        font-size: 14px;
+      }
+
+      .whatsapp-btn {
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- YouTube-style Video Section -->
+    <div class="video-section">
+      <video autoplay loop playsinline controls>
+        <source src="mla.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- Lower Card Section -->
+    <div class="card-section">
+      <h1>Maddipati Venkata Raju</h1>
+      <p class="designation">MLA, Gopalapuram</p>
+      <p class="description">
+        గోపాలపురం నియాజకవర్గం శాసనసభ సభ్యులు “శ్రీ మద్దిపాటి వెంకటరాజు” గారి యొక్క రోజువారి కార్యక్రమాల వివరాల కొరకు ఈ చానల్ ఫొలొ అవ్వండి.
+      </p>
+      <a href="https://whatsapp.com/channel/0029Va4mSJAJuyAAh3qq1y38" target="_blank" class="whatsapp-btn">WhatsApp</a>
+    </div>
+  </div>
+
+</body>
+</html>
