@@ -5,49 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MLA Site with Video + Social Buttons</title>
   <style>
-    /* Reset */
     body, html {
       margin: 0;
       padding: 0;
-      height: 100%;
       font-family: Arial, sans-serif;
-      overflow: hidden;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
-    /* Fullscreen video background (same as before) */
-    .video-bg {
-      position: fixed;
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ✅ YouTube-style 16:9 video box */
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 */
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      background: #000;
+    }
+    .video-wrapper video {
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      z-index: -1;
-    }
-
-    /* Centered container */
-    .container {
-      position: relative;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
+      object-fit: contain;
     }
 
     /* Buttons */
     .btn {
       display: inline-block;
-      padding: 15px 25px;
-      color: #fff;
-      text-decoration: none;
-      font-size: 20px;
-      border-radius: 8px;
+      padding: 14px 30px;
+      font-size: 18px;
       font-weight: bold;
-      transition: background 0.3s ease;
+      color: #fff;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.2s ease;
       text-align: center;
-      width: 250px;
+    }
+    .btn:hover {
+      transform: scale(1.05);
     }
     .whatsapp-btn {
       background-color: #25D366;
@@ -61,37 +71,48 @@
     .facebook-btn:hover {
       background-color: #0f5ec1;
     }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 <body>
-  <!-- Background Video -->
-  <video autoplay muted loop class="video-bg">
-    <source src="mla (1).mp4" type="video/mp4" />
-    Your browser does not support HTML5 video.
-  </video>
-
-  <!-- Buttons -->
   <div class="container">
-    <a
-      href="https://wa.me/918309736437"
-      target="_blank"
-      class="btn whatsapp-btn"
-      id="whatsapp-btn"
-    >
-      📲 Chat on WhatsApp
-    </a>
+    <!-- ✅ YouTube-style video -->
+    <div class="video-wrapper">
+      <video autoplay muted loop controls>
+        <source src="mla  (1).mp4" type="video/mp4" />
+        Your browser does not support HTML5 video.
+      </video>
+    </div>
 
-    <a
-      href="https://www.facebook.com/VenkataRajuMaddipati?mibextid=wwXIfr&mibextid=wwXIfr"
-      target="_blank"
-      class="btn facebook-btn"
-      id="facebook-btn"
-    >
-      👍 Connect on Facebook
-    </a>
+    <!-- Buttons below video -->
+    <div class="buttons">
+      <a
+        href="https://wa.me/918309736437"
+        target="_blank"
+        class="btn whatsapp-btn"
+        id="whatsapp-btn"
+      >
+        📲 Chat on WhatsApp
+      </a>
+
+      <a
+        href="https://www.facebook.com/VenkataRajuMaddipati?mibextid=wwXIfr&mibextid=wwXIfr"
+        target="_blank"
+        class="btn facebook-btn"
+        id="facebook-btn"
+      >
+        👍 Connect on Facebook
+      </a>
+    </div>
   </div>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
@@ -113,7 +134,7 @@
     getAnalytics(app);
     const db = getDatabase(app);
 
-    // WhatsApp click tracking
+    // WhatsApp tracking
     document.getElementById("whatsapp-btn").addEventListener("click", () => {
       const clickRef = ref(db, "clickLogs/whatsapp");
       const newClick = push(clickRef);
@@ -125,7 +146,7 @@
       update(ref(db), { "whatsapp-btn-count": increment(1) });
     });
 
-    // Facebook click tracking
+    // Facebook tracking
     document.getElementById("facebook-btn").addEventListener("click", () => {
       const clickRef = ref(db, "clickLogs/facebook");
       const newClick = push(clickRef);
