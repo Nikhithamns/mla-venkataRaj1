@@ -1,132 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connect on WhatsApp</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MLA Site with Video + Social Buttons</title>
   <style>
-    * {
-      box-sizing: border-box;
+    /* Reset */
+    body, html {
       margin: 0;
       padding: 0;
-    }
-
-    body, html {
       height: 100%;
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      overflow: hidden;
     }
 
+    /* Fullscreen video background */
+    .video-bg {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+      object-fit: cover;
+    }
+
+    /* Centered container */
     .container {
+      position: relative;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      width: 90%;
-      max-width: 1000px;
+      justify-content: center;
+      align-items: center;
       gap: 20px;
     }
 
-    /* YouTube-style 16:9 Video */
-    .video-section {
-      position: relative;
-      width: 100%;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      overflow: hidden;
-      border-radius: 15px;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
-    }
-
-    .video-section video {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain; /* keeps full video visible */
-    }
-
-    .card-section {
-      background: rgba(255, 255, 255, 0.95);
-      flex-direction: column;
-      border-radius: 20px;
-      padding: 20px 30px;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-
-    .card-section h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    .card-section p.designation {
-      font-size: 18px;
-      color: #666;
-      margin-bottom: 10px;
-    }
-
-    .card-section p.description {
-      font-size: 16px;
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    .whatsapp-btn {
+    /* Buttons */
+    .btn {
       display: inline-block;
-      padding: 14px 30px;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      background-color: #25D366;
-      border-radius: 10px;
+      padding: 15px 25px;
+      color: #fff;
       text-decoration: none;
+      font-size: 20px;
+      border-radius: 8px;
+      font-weight: bold;
       transition: background 0.3s ease;
+      text-align: center;
+      width: 250px;
     }
-
+    .whatsapp-btn {
+      background-color: #25D366;
+    }
     .whatsapp-btn:hover {
-      background-color: #1ebc59;
+      background-color: #1ebe5a;
     }
-
-    @media (max-width: 768px) {
-      .card-section h1 {
-        font-size: 24px;
-      }
-
-      .card-section p.designation,
-      .card-section p.description {
-        font-size: 14px;
-      }
-
-      .whatsapp-btn {
-        width: 80%;
-      }
+    .facebook-btn {
+      background-color: #1877F2;
+    }
+    .facebook-btn:hover {
+      background-color: #0f5ec1;
     }
   </style>
 </head>
 <body>
+  <!-- Background Video -->
+  <video autoplay muted loop class="video-bg">
+    <source src="your-video.mp4" type="video/mp4" />
+    Your browser does not support HTML5 video.
+  </video>
 
+  <!-- Buttons -->
   <div class="container">
-    <!-- YouTube-style Video Section -->
-    <div class="video-section">
-      <video autoplay loop playsinline controls>
-        <source src="mla.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
+    <a
+      href="https://wa.me/918309736437"
+      target="_blank"
+      class="btn whatsapp-btn"
+      id="whatsapp-btn"
+    >
+      📲 Chat on WhatsApp
+    </a>
 
-    <!-- Lower Card Section -->
-    <div class="card-section">
-      <h1>Maddipati Venkata Raju</h1>
-      <p class="designation">MLA, Gopalapuram</p>
-      <p class="description">
-        గోపాలపురం నియాజకవర్గం శాసనసభ సభ్యులు “శ్రీ మద్దిపాటి వెంకటరాజు” గారి యొక్క రోజువారి కార్యక్రమాల వివరాల కొరకు ఈ చానల్ ఫొలొ అవ్వండి.
-      </p>
-      <a href="https://whatsapp.com/channel/0029Va4mSJAJuyAAh3qq1y38" target="_blank" class="whatsapp-btn">WhatsApp</a>
-    </div>
+    <a
+      href="https://www.facebook.com/VenkataRajuMaddipati?mibextid=wwXIfr&mibextid=wwXIfr"
+      target="_blank"
+      class="btn facebook-btn"
+      id="facebook-btn"
+    >
+      👍 Connect on Facebook
+    </a>
   </div>
 
+  <!-- Firebase SDKs -->
+  <script type="module">
+    // Import Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
+    import { getDatabase, ref, push, set, increment, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAb_RH-NXtAAtIl7NKOXQzsNI1DsnNh9kc",
+      authDomain: "mla-site.firebaseapp.com",
+      databaseURL: "https://mla-site-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "mla-site",
+      storageBucket: "mla-site.appspot.com",
+      messagingSenderId: "277142733223",
+      appId: "1:277142733223:web:6200603f581e85c092f682",
+      measurementId: "G-MY95NZ2PKK"
+    };
+
+    // Init Firebase
+    const app = initializeApp(firebaseConfig);
+    getAnalytics(app);
+    const db = getDatabase(app);
+
+    // Track WhatsApp clicks
+    document.getElementById("whatsapp-btn").addEventListener("click", () => {
+      const clickRef = ref(db, "clickLogs/whatsapp");
+      const newClick = push(clickRef);
+
+      set(newClick, {
+        ts: Date.now(),
+        ua: navigator.userAgent,
+        path: window.location.pathname
+      });
+
+      // Increment counter
+      update(ref(db), {
+        "whatsapp-btn-count": increment(1)
+      });
+    });
+
+    // Track Facebook clicks
+    document.getElementById("facebook-btn").addEventListener("click", () => {
+      const clickRef = ref(db, "clickLogs/facebook");
+      const newClick = push(clickRef);
+
+      set(newClick, {
+        ts: Date.now(),
+        ua: navigator.userAgent,
+        path: window.location.pathname
+      });
+
+      // Increment counter
+      update(ref(db), {
+        "facebook-btn-count": increment(1)
+      });
+    });
+  </script>
 </body>
 </html>
