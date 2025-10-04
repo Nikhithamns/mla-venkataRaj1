@@ -25,11 +25,10 @@
       margin: 20px auto;
     }
 
-    /* YouTube-style 16:9 video */
     .video-section {
       position: relative;
       width: 100%;
-      padding-bottom: 56.25%; /* 16:9 ratio */
+      padding-bottom: 56.25%;
       border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -76,21 +75,14 @@
       margin: 5px;
     }
 
-    .whatsapp-btn {
-      background-color: #25D366;
-    }
-    .whatsapp-btn:hover {
-      background-color: #128C7E;
-      transform: scale(1.05);
-    }
+    .whatsapp-btn { background-color: #25D366; }
+    .whatsapp-btn:hover { background-color: #128C7E; transform: scale(1.05); }
 
-    .facebook-btn {
-      background-color: #1877F2;
-    }
-    .facebook-btn:hover {
-      background-color: #0d5bd7;
-      transform: scale(1.05);
-    }
+    .facebook-btn { background-color: #1877F2; }
+    .facebook-btn:hover { background-color: #0d5bd7; transform: scale(1.05); }
+
+    .instagram-btn { background-color: #E1306C; }
+    .instagram-btn:hover { background-color: #C13584; transform: scale(1.05); }
 
     .click-count {
       display: block;
@@ -141,6 +133,14 @@
       Facebook
     </a>
     <span class="click-count" id="facebookCount">Facebook Clicks: 0</span>
+
+    <a href="https://www.instagram.com/maddipati_venkata_raju/?hl=en"
+       target="_blank"
+       class="btn instagram-btn"
+       id="instagramButton">
+      Instagram
+    </a>
+    <span class="click-count" id="instagramCount">Instagram Clicks: 0</span>
   </div>
 </div>
 
@@ -164,26 +164,32 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  // Separate counters for each button
+  // Separate counters
   const whatsappCounterRef = db.ref("whatsapp-btn-count");
   const facebookCounterRef = db.ref("facebook-btn-count");
+  const instagramCounterRef = db.ref("instagram-btn-count");
   const logsRef = db.ref("clickLogs");
 
   // DOM elements
   const whatsappButton = document.getElementById("whatsappButton");
   const facebookButton = document.getElementById("facebookButton");
+  const instagramButton = document.getElementById("instagramButton");
   const whatsappCount = document.getElementById("whatsappCount");
   const facebookCount = document.getElementById("facebookCount");
+  const instagramCount = document.getElementById("instagramCount");
 
   // Display counters in real-time
-  whatsappCounterRef.on("value", snapshot => {
-    whatsappCount.textContent = "WhatsApp Clicks: " + (snapshot.val() || 0);
+  whatsappCounterRef.on("value", snap => {
+    whatsappCount.textContent = "WhatsApp Clicks: " + (snap.val() || 0);
   });
-  facebookCounterRef.on("value", snapshot => {
-    facebookCount.textContent = "Facebook Clicks: " + (snapshot.val() || 0);
+  facebookCounterRef.on("value", snap => {
+    facebookCount.textContent = "Facebook Clicks: " + (snap.val() || 0);
+  });
+  instagramCounterRef.on("value", snap => {
+    instagramCount.textContent = "Instagram Clicks: " + (snap.val() || 0);
   });
 
-  // Hash function for IP
+  // Hash IP
   async function hashIP(ip) {
     const enc = new TextEncoder();
     const data = enc.encode(ip);
@@ -192,9 +198,9 @@
       .map(b => b.toString(16).padStart(2,'0')).join('');
   }
 
-  // WhatsApp button click
-  whatsappButton.addEventListener("click", async () => {
-    whatsappCounterRef.transaction(current => (current || 0) + 1);
+  // Track Clicks
+  async function trackClick(buttonName, counterRef) {
+    counterRef.transaction(current => (current || 0) + 1);
     let ip = "unknown";
     try {
       const res = await fetch("https://api.ipify.org?format=json");
@@ -203,32 +209,18 @@
     } catch (e) { console.warn("IP fetch failed:", e); }
 
     logsRef.push({
-      button: "whatsapp",
+      button: buttonName,
       ip,
       ua: navigator.userAgent,
       ts: Date.now(),
       path: location.pathname
     });
-  });
+  }
 
-  // Facebook button click
-  facebookButton.addEventListener("click", async () => {
-    facebookCounterRef.transaction(current => (current || 0) + 1);
-    let ip = "unknown";
-    try {
-      const res = await fetch("https://api.ipify.org?format=json");
-      const json = await res.json();
-      ip = await hashIP(json.ip);
-    } catch (e) { console.warn("IP fetch failed:", e); }
-
-    logsRef.push({
-      button: "facebook",
-      ip,
-      ua: navigator.userAgent,
-      ts: Date.now(),
-      path: location.pathname
-    });
-  });
+  // Event Listeners
+  whatsappButton.addEventListener("click", () => trackClick("whatsapp", whatsappCounterRef));
+  facebookButton.addEventListener("click", () => trackClick("facebook", facebookCounterRef));
+  instagramButton.addEventListener("click", () => trackClick("instagram", instagramCounterRef));
 </script>
 
 </body>
